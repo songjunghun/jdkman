@@ -18,7 +18,7 @@ def get_jvm_api_url() -> str:
     https://mise-java.jdx.dev/
     https://mise-java.jdx.dev/jvm/{releaseType}/{operatingSystem}/{architecture}.json
       releaseType: ga, ea
-      operatingSystem: linux, macosx, windows
+      operatingSystem: alpine-linux, linux, macosx, windows
       architecture: aarch64, arm32, i686, x86_64
     """
     _OS_MAP = {
