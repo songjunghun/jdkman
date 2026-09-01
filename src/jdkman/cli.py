@@ -211,10 +211,10 @@ def outdated():
 
     # get_outdated()
     tab = table("distro", "installed", "latest")
-    for slug, outdated_info in get_outdated().items():
+    for slug, outdated_info in get_outdated(True).items():
         tab.add_row(
             slug,
-            f"{MARK_WARNING} {st_dim(outdated_info['installed'])}",
+            st_dim(outdated_info['installed']),
             st_div(outdated_info['latest'])
         )
     out(tab if tab.row_count > 0
