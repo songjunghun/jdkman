@@ -159,7 +159,7 @@ Show all installed JDK distributions managed by jdkman.
 
 ```bash
 jdk list
-jdk ls      # alias
+jdk ls    # alias
 ```
 
 ---
@@ -170,7 +170,6 @@ Remove an installed JDK distribution.
 
 ```bash
 jdk uninstall zulu-21
-jdk rm zulu-21        # alias
 ```
 
 ---
@@ -181,7 +180,6 @@ Upgrade an installed distribution to the latest patch version.
 
 ```bash
 jdk upgrade zulu-21
-jdk upd zulu-21       # alias
 ```
 
 ---
@@ -196,13 +194,22 @@ jdk outdated
 
 ---
 
+#### `jdk update`
+
+Sync the local JVM database with the latest release data, bypassing the cache.
+
+```bash
+jdk update
+```
+
+---
+
 #### `jdk vendors`
 
 List all available JDK vendors.
 
 ```bash
 jdk vendors
-jdk vd        # alias
 ```
 
 ---
@@ -213,7 +220,6 @@ List all available JDK editions (vendor + feature combinations).
 
 ```bash
 jdk editions
-jdk ed         # alias
 ```
 
 ---
