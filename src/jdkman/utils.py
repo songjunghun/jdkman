@@ -1,6 +1,7 @@
 import hashlib
 import re
 import tarfile
+import zipfile
 from pathlib import Path
 
 
@@ -86,6 +87,9 @@ def extract_archive(archive_path: Path, extract_path: Path) -> None:
     if archive_path.name.endswith(".tar.gz"):
         with tarfile.open(archive_path) as tar:
             tar.extractall(extract_path)
+    elif archive_path.name.endswith(".zip"):
+        with zipfile.ZipFile(archive_path) as zip:
+            zip.extractall(extract_path)
     else:
         raise ValueError(f"Unsupported archive format: {archive_path}")
 

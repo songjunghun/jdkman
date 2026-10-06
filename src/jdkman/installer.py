@@ -7,7 +7,7 @@ import typer
 from rich.pretty import pretty_repr
 from rich.progress import Progress, BarColumn, DownloadColumn, TransferSpeedColumn, TimeRemainingColumn
 
-from .config import CACHE_DIR, INSTALL_DIR, CLEAN_WORK_DIR, is_macos
+from .config import CACHE_DIR, INSTALL_DIR, CLEAN_WORK_DIR, is_macos, is_windows
 from .console import log, out, MARK_ARROW, MARK_INVALID, MARK_CHECK, st_emp, st_div, st_dim
 from .registry import add_installed, del_installed, get_installed, get_installed_slug, get_outdated, get_slug, get_dist
 from .utils import extract_archive, sha256_file
@@ -67,10 +67,13 @@ def find_dist_jvm_root(work_dir: Path) -> Path:
     log(f"find_dist_jvm_root()")
     log(f"  work_dir: {work_dir}")
 
-    # todo: impl other OS: linux, windows
+    # todo: impl other OS: linux
     if is_macos():
         for java_bin in work_dir.rglob("Contents/Home/bin/java"):
             return java_bin.parents[3]
+    elif is_windows():
+        for java_bin in work_dir.rglob("bin/java.exe"):
+            return java_bin.parents[1]
     else:
         for java_bin in work_dir.rglob("bin/java"):
             return java_bin.parents[1]
