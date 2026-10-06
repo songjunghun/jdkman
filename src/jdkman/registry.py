@@ -221,7 +221,11 @@ def get_dist(slug: str, version: str | None = None) -> dict[str, Any]:
         dist["file_type"]: dist
         for dist in target_version["dists"]
     }
-    target_dist = next((dists_by_type[file_type] for file_type in ("tar.gz", "zip") if file_type in dists_by_type), None)
+    target_dist = next(
+        dists_by_type[file_type]
+        for file_type in ("tar.gz", "zip")
+        if file_type in dists_by_type
+    )
 
     return {
         "vendor": slug_info["vendor"],
