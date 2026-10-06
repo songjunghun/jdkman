@@ -92,6 +92,23 @@ def slug(
 
 
 @app.command()
+def dist(
+        distro: Annotated[str, typer.Argument(
+            metavar="<DISTRO>",
+            help="JVM distribution name to get detail information. (e.g. zulu-21, temurin-17)",
+            autocompletion=autocomplete_slugs
+        )]
+):
+    """
+    get_dist(distro)
+    """
+    log(f"dist()")
+    log(f"  distro: {distro}")
+
+    out(get_dist(distro))
+
+
+@app.command()
 def managed(sort: Annotated[bool, typer.Option()] = False):
     """
     get_managed()
