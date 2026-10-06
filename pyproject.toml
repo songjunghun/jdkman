@@ -1,6 +1,6 @@
 [project]
 name = "jdkman"
-version = "0.6.1"
+version = "0.6.2"
 description = "A command-line tool for installing and managing OpenJDK distributions."
 authors = [{name = "junghun.song", email = "xunyss@gmail.com"}]
 readme = "README.md"
@@ -17,8 +17,8 @@ jdk = "jdkman.main:invoke"
 where = ["src"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
 pythonpath = ["src"]
+testpaths = ["tests"]
 
 [build-system]
 requires = ["uv_build >= 0.8.14, <0.20.0"]
