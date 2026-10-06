@@ -151,9 +151,11 @@ def get_managed_slug(env_tag: str) -> dict[str, Any]:
     return get_installed_slug(get_aliases().get(env_tag, env_tag))
 
 
-def get_outdated() -> dict[str, dict[str, Any]]:
+def get_outdated(clear: bool = False) -> dict[str, dict[str, Any]]:
     log(f"get_outdated()")
 
+    if clear:
+        clear_catalog()
     slugs = fetch_slugs()
     return {
         slug: {
