@@ -216,7 +216,12 @@ def get_dist(slug: str, version: str | None = None) -> dict[str, Any]:
     search_version = version if version else slug_info["latest"]
     versions = slug_info["versions"]
     target_version = next(version for version in versions if version["version"] == search_version)
-    target_dist = next(dist for dist in target_version["dists"] if dist["file_type"] == "tar.gz")
+    # target_dist = next(dist for dist in target_version["dists"] if dist["file_type"] == "tar.gz")
+    dists_by_type = {
+        dist["file_type"]: dist
+        for dist in target_version["dists"]
+    }
+    target_dist = next((dists_by_type[file_type] for file_type in ("tar.gz", "zip") if file_type in dists_by_type), None)
 
     return {
         "vendor": slug_info["vendor"],
