@@ -53,6 +53,8 @@ brew install xunyss/tap/jdkman
 pip install jdkman
 ```
 
+Windows is installed via pip. Run `jdk` from Git Bash or another terminal; PowerShell and cmd do not have shell integration for auto environment switching yet.
+
 ## Quick Start
 
 ```bash
@@ -176,7 +178,7 @@ jdk uninstall zulu-21
 
 #### `jdk upgrade <DISTRO>`
 
-Upgrade an installed distribution to the latest patch version.
+Upgrade an installed distribution to the latest patch version. Uses the cached catalog; run `jdk outdated` first if it may be stale.
 
 ```bash
 jdk upgrade zulu-21
@@ -186,7 +188,7 @@ jdk upgrade zulu-21
 
 #### `jdk outdated`
 
-List installed distributions that have newer versions available.
+List installed distributions that have newer versions available. Fetches the latest catalog before comparing, so results are current even within the cache TTL.
 
 ```bash
 jdk outdated

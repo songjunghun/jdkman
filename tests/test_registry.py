@@ -356,6 +356,26 @@ def test_get_outdated_excludes_current(managed_db, sample_dist, monkeypatch):
     assert "zulu-21" not in outdated
 
 
+def test_get_outdated_default_keeps_cache(managed_db, monkeypatch):
+    calls = []
+    monkeypatch.setattr(registry, "clear_catalog", lambda: calls.append("clear"))
+    monkeypatch.setattr(registry, "fetch_slugs", lambda: calls.append("fetch") or {})
+
+    registry.get_outdated()
+
+    assert calls == ["fetch"]
+
+
+def test_get_outdated_clear_refetches_catalog(managed_db, monkeypatch):
+    calls = []
+    monkeypatch.setattr(registry, "clear_catalog", lambda: calls.append("clear"))
+    monkeypatch.setattr(registry, "fetch_slugs", lambda: calls.append("fetch") or {})
+
+    registry.get_outdated(True)
+
+    assert calls == ["clear", "fetch"]
+
+
 # ── get_dist ──────────────────────────────────────────────────────────────────
 
 def test_get_dist_returns_merged_info(monkeypatch):

@@ -1,6 +1,9 @@
+from pathlib import Path
+
 import pytest
 
-from jdkman.installer import make_jvm_dir_name
+import jdkman.installer as installer
+from jdkman.installer import make_jvm_dir_name, find_dist_jvm_root
 
 
 def _info(vendor, image_type="jdk", features=None, major_version=21):
@@ -34,3 +37,34 @@ def _info(vendor, image_type="jdk", features=None, major_version=21):
 def test_make_jvm_root_name(info, expected):
     assert make_jvm_dir_name(info) == expected
 
+
+def _touch_java(path: Path):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.touch()
+
+
+def test_find_dist_jvm_root_macos(tmp_path, monkeypatch):
+    monkeypatch.setattr(installer, "is_macos", lambda: True)
+    monkeypatch.setattr(installer, "is_windows", lambda: False)
+    jvm_root = tmp_path / "zulu-21.jdk"
+    _touch_java(jvm_root / "Contents" / "Home" / "bin" / "java")
+
+    assert find_dist_jvm_root(tmp_path) == jvm_root
+
+
+def test_find_dist_jvm_root_windows(tmp_path, monkeypatch):
+    monkeypatch.setattr(installer, "is_macos", lambda: False)
+    monkeypatch.setattr(installer, "is_windows", lambda: True)
+    jvm_root = tmp_path / "jdk-21"
+    _touch_java(jvm_root / "bin" / "java.exe")
+
+    assert find_dist_jvm_root(tmp_path) == jvm_root
+
+
+def test_find_dist_jvm_root_linux(tmp_path, monkeypatch):
+    monkeypatch.setattr(installer, "is_macos", lambda: False)
+    monkeypatch.setattr(installer, "is_windows", lambda: False)
+    jvm_root = tmp_path / "jdk-21"
+    _touch_java(jvm_root / "bin" / "java")
+
+    assert find_dist_jvm_root(tmp_path) == jvm_root

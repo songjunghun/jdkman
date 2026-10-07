@@ -1,5 +1,6 @@
 import hashlib
 import tarfile
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -147,9 +148,25 @@ def test_extract_archive_tar_gz(tmp_path):
     assert (out_dir / "hello.txt").read_text() == "world"
 
 
-def test_extract_archive_unsupported_format(tmp_path):
+def test_extract_archive_zip(tmp_path):
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "hello.txt").write_text("world")
+
     archive = tmp_path / "test.zip"
-    archive.write_bytes(b"PK\x03\x04")  # zip magic bytes
+    with zipfile.ZipFile(archive, "w") as zf:
+        zf.write(src / "hello.txt", arcname="hello.txt")
+
+    out_dir = tmp_path / "extracted"
+    out_dir.mkdir()
+    extract_archive(archive, out_dir)
+
+    assert (out_dir / "hello.txt").read_text() == "world"
+
+
+def test_extract_archive_unsupported_format(tmp_path):
+    archive = tmp_path / "test.7z"
+    archive.write_bytes(b"7z\xbc\xaf\x27\x1c")  # 7z magic bytes
     with pytest.raises(ValueError, match="Unsupported archive format"):
         extract_archive(archive, tmp_path)
 
