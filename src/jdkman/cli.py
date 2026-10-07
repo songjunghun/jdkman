@@ -206,6 +206,10 @@ def outdated():
     """
     log(f"outdated()")
 
+    if not get_installed():
+        out(f"{MARK_CHECK} No installed JVM distributions.")
+        return
+
     # get_outdated()
     tab = table("distro", "installed", "latest")
     for slug, outdated_info in get_outdated(True).items():
